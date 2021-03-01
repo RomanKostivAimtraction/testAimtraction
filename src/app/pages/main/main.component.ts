@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-
+import { GridOptions } from 'ag-grid-community';
+import { from } from 'rxjs';
 import { RequestsService } from 'src/app/shared/services/requests.service';
+import { DataService } from './data.service';
+import { ImageComponent } from '../main/image/image.component';
 
 @Component({
   selector: 'app-main',
@@ -9,22 +12,21 @@ import { RequestsService } from 'src/app/shared/services/requests.service';
 })
 export class MainComponent implements OnInit {
 
-  columnDefs = [
-    { headerName: 'HostName', field: 'hostname', sortable: true, filter: true },
-    { headerName: 'Device', field: 'device', sortable: true, filter: true },
-    { headerName: 'OS', field: 'os', sortable: true, filter: true },
-    { headerName: 'Owner display name', field: 'owner_name', sortable: true, filter: true },
-  ];
+  public gridOptions: GridOptions;
 
-  rowData = [
-    { hostname: 'dfgdfgdfg', device: 'Notebook', os: 'Windows', owner_name: 'Olya' },
-    { hostname: 'fgh', device: 'Notebook', os: 'Linux', owner_name: 'VAsya' },
-    { hostname: 'dfgdfghkjhjkgdfg', device: 'Desctop', os: 'MacOS', owner_name: 'Petro' },
-  ];
+  rowData = [];
 
   constructor(
-    private requestService: RequestsService
-  ) { }
+    private requestService: RequestsService,
+    public dataService: DataService
+  ) {
+    this.gridOptions = {
+      onGridReady: () => {
+        this.gridOptions.api.sizeColumnsToFit();
+      },
+      rowHeight: 150
+    };
+  }
 
   ngOnInit(): void {
     this.getInfo();
@@ -32,11 +34,24 @@ export class MainComponent implements OnInit {
   }
 
   getInfo() {
-    const url = 'https://www.googleapis.com/youtube/v3/search?key=AIzaSyDOfT_BO81aEZScosfTYMruJobmpjqNeEk&maxResults=50&type=video&part=snippet&q=john';
+    const apiKey = 'AIzaSyB3GVWc8NIjn8B2-BbzW-AOko2lfOHgTKw';
+    const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&maxResults=20&type=video&part=snippet&q=john`;
     this.requestService.getInfo(url).subscribe(res => {
       console.log(res);
+      // this.rowData = res.items;
 
-    })
+
+      this.rowData = res.items.map(elem => {
+        return {
+          thumbnails: elem.snippet.thumbnails.default.url,
+          publishedAt: elem.snippet.publishedAt,
+          title: elem.snippet.title,
+          description: elem.snippet.description,
+        };
+      });
+      console.log('rowData');
+      console.log(this.rowData);
+    });
   }
 
 }

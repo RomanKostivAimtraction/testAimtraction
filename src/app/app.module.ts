@@ -6,17 +6,19 @@ import { AppComponent } from './app.component';
 import { MainComponent } from './pages/main/main.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { HttpClientModule } from '@angular/common/http';
+import { ImageComponent } from './pages/main/image/image.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainComponent
+    MainComponent,
+    ImageComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    AgGridModule.withComponents([])
+    AgGridModule.withComponents([ImageComponent])
   ],
   providers: [],
   bootstrap: [AppComponent]
