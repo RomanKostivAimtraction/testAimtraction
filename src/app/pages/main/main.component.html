@@ -1,7 +1,35 @@
-<ag-grid-angular
-    style="width: 100%; height: 700px;"
-    class="ag-theme-alpine"
-    [gridOptions]="gridOptions"
-    [rowData]="rowData"
-    [columnDefs]="dataService.columnDefs">
+<div class="panel">
+    <div class="searchPlace">
+        <input type="text" placeholder="write text..." [(ngModel)]="searchValue" name="searchValue">
+        <button (click)="getInfo()" class="buttonClick">Search</button>
+    </div>
+    <div class="infoPanel">
+        <div class="box">
+            <span>all rows</span>
+            <input type="number" [(ngModel)]="countAllcase" name="countAllcase">
+        </div>
+        <div class="box">
+            <span>selected rows</span>
+            <input type="number" [(ngModel)]="countSelectedCase" name="countSelectedCase">
+        </div>
+        <button class="buttonClick">Change mode</button>
+    </div>
+
+
+    <div class="spiner" *ngIf="spinerIsLoading">
+        <img src="assets/icons/spiner.gif" alt="">
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+<ag-grid-angular style="width: 100%; height: 700px;" class="ag-theme-alpine" [gridOptions]="gridOptions"
+    [rowData]="rowData" rowSelection='multiple' [columnDefs]="dataService.columnDefs"
+    (rowSelected)="rowSelected($event)">
 </ag-grid-angular>

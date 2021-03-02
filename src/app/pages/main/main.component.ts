@@ -11,8 +11,12 @@ import { ImageComponent } from '../main/image/image.component';
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
-
+  searchValue = '';
+  countAllcase: number;
+  countSelectedCase: any;
   public gridOptions: GridOptions;
+
+  spinerIsLoading = false;
 
   rowData = [];
 
@@ -24,28 +28,38 @@ export class MainComponent implements OnInit {
       onGridReady: () => {
         this.gridOptions.api.sizeColumnsToFit();
       },
-      rowHeight: 150
+      rowHeight: 200,
     };
   }
 
   ngOnInit(): void {
-    this.getInfo();
+    // this.getInfo();
+  }
+
+  rowSelected(event) {
+    console.log(event);
+    console.log(this.gridOptions.api.getSelectedRows());
+    
+    this.countSelectedCase = this.gridOptions.api.getSelectedRows().length;
 
   }
 
   getInfo() {
+    this.spinerIsLoading = true;
     const apiKey = 'AIzaSyB3GVWc8NIjn8B2-BbzW-AOko2lfOHgTKw';
-    const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&maxResults=20&type=video&part=snippet&q=john`;
+    const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&maxResults=20&type=video&part=snippet&q=${this.searchValue}`;
     this.requestService.getInfo(url).subscribe(res => {
+      this.spinerIsLoading = false;
+      this.countAllcase = res.items.length;
       console.log(res);
       // this.rowData = res.items;
 
 
       this.rowData = res.items.map(elem => {
         return {
-          thumbnails: elem.snippet.thumbnails.default.url,
+          thumbnails: elem.snippet.thumbnails.medium.url,
           publishedAt: elem.snippet.publishedAt,
-          title: elem.snippet.title,
+          title: elem,
           description: elem.snippet.description,
         };
       });

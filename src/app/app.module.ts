@@ -7,6 +7,7 @@ import { MainComponent } from './pages/main/main.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { ImageComponent } from './pages/main/image/image.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { ImageComponent } from './pages/main/image/image.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     AgGridModule.withComponents([ImageComponent])
   ],
   providers: [],
