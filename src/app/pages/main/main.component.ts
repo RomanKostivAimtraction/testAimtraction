@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
-import { from } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 import { RequestsService } from 'src/app/shared/services/requests.service';
 import { DataService } from './data.service';
 import { ImageComponent } from '../main/image/image.component';
@@ -19,14 +19,27 @@ export class MainComponent implements OnInit {
 
   spinerIsLoading = false;
 
-  rowData = [];
+  rowData = [
+    {
+      thumbnails: 'sdfgsdfg',
+      publishedAt: 'sdfgsdfg',
+      title: 'sdfsdf',
+      description: 'elem.snippet.description',
+    }, {
+      thumbnails: 'sdfgsdfg',
+      publishedAt: 'sdfgsdfg',
+      title: 'sdfsdf',
+      description: 'elem.snippet.description',
+    }
+  ];
 
   constructor(
     private requestService: RequestsService,
     public dataService: DataService,
-    private app: ChangeDetectorRef
+    private toastr: ToastrService
   ) {
     this.gridOptions = {
+      columnDefs: this.getColumnDefs(),
       onGridReady: () => {
         this.gridOptions.api.sizeColumnsToFit();
       },
@@ -38,10 +51,6 @@ export class MainComponent implements OnInit {
     // this.getInfo();
   }
 
-  ngOnChanges() {
-  
-    console.log(this.dataService.columnDefs[0].checkboxSelection);
-  }
 
   rowSelected() {
     console.log(this.gridOptions.api.getSelectedRows());
@@ -49,10 +58,18 @@ export class MainComponent implements OnInit {
   }
 
   changeMode() {
-    this.dataService.columnDefs[0].checkboxSelection = !this.dataService.columnDefs[0].checkboxSelection;
-    console.log(this.dataService.columnDefs[0].checkboxSelection);
+    const columnDef = this.gridOptions.api.getColumnDefs();
+    columnDef[0].checkboxSelection = !columnDef[0].checkboxSelection;
+    this.gridOptions.api.setColumnDefs(columnDef);
+    this.gridOptions.api.refreshCells();
+
+    // this.columnDefs[0].checkboxSelection = !this.columnDefs[0].checkboxSelection;
+
+    // this.gridOptions.api.setColumnDefs(this.columnDefs);
+    // console.log(this.columnDefs);
     // this.app.detectChanges();
   }
+
   getInfo() {
     this.spinerIsLoading = true;
     const apiKey = 'AIzaSyB3GVWc8NIjn8B2-BbzW-AOko2lfOHgTKw';
@@ -75,7 +92,53 @@ export class MainComponent implements OnInit {
       console.log('rowData');
       console.log(this.rowData);
       // this.app.detectChanges();
+    }, (err: any) => {
+      this.toastr.error('Мати Василева! Шось пішло не так')
     });
+  }
+
+  getColumnDefs() {
+    return [
+      {
+        headerName: '',
+        field: 'checkBox',
+        checkboxSelection: true,
+        headerCheckboxSelection: true,
+        width: 10
+      },
+      {
+        headerName: '',
+        field: 'thumbnails',
+        sortable: true,
+        filter: true,
+        // checkboxSelection: true,
+        cellRendererFramework: ImageComponent
+      },
+      {
+        headerName: 'Published on',
+        field: 'publishedAt',
+        sortable: true,
+        filter: true,
+        valueFormatter: params => this.dataFormater(params.data.publishedAt)
+      },
+      {
+        headerName: 'Video Title',
+        field: 'title',
+        sortable: true,
+        filter: true,
+        cellRenderer: params => this.videoTitleLink(params)
+      },
+      { headerName: 'Description', field: 'description', sortable: true, filter: true },
+    ]
+  }
+
+  dataFormater(date) {
+    return `${date.slice(8, 10)}.${date.slice(5, 7)}.${date.slice(0, 4)}`;
+  }
+
+  videoTitleLink(params) {
+    // console.log(params);
+    // return `<a href="https://www.youtube.com/watch?v=${params.value.id.videoId}" target="_blank" rel="noopener">` + params.value.snippet.title + `</a>`;
   }
 
 }
