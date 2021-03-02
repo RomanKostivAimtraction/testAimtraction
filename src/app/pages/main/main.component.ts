@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { GridOptions } from 'ag-grid-community';
 import { from } from 'rxjs';
 import { RequestsService } from 'src/app/shared/services/requests.service';
@@ -8,7 +8,8 @@ import { ImageComponent } from '../main/image/image.component';
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss']
+  styleUrls: ['./main.component.scss'],
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MainComponent implements OnInit {
   searchValue = '';
@@ -22,7 +23,8 @@ export class MainComponent implements OnInit {
 
   constructor(
     private requestService: RequestsService,
-    public dataService: DataService
+    public dataService: DataService,
+    private app: ChangeDetectorRef
   ) {
     this.gridOptions = {
       onGridReady: () => {
@@ -36,14 +38,21 @@ export class MainComponent implements OnInit {
     // this.getInfo();
   }
 
-  rowSelected(event) {
-    console.log(event);
-    console.log(this.gridOptions.api.getSelectedRows());
-    
-    this.countSelectedCase = this.gridOptions.api.getSelectedRows().length;
-
+  ngOnChanges() {
+  
+    console.log(this.dataService.columnDefs[0].checkboxSelection);
   }
 
+  rowSelected() {
+    console.log(this.gridOptions.api.getSelectedRows());
+    this.countSelectedCase = this.gridOptions.api.getSelectedRows().length;
+  }
+
+  changeMode() {
+    this.dataService.columnDefs[0].checkboxSelection = !this.dataService.columnDefs[0].checkboxSelection;
+    console.log(this.dataService.columnDefs[0].checkboxSelection);
+    // this.app.detectChanges();
+  }
   getInfo() {
     this.spinerIsLoading = true;
     const apiKey = 'AIzaSyB3GVWc8NIjn8B2-BbzW-AOko2lfOHgTKw';
@@ -65,6 +74,7 @@ export class MainComponent implements OnInit {
       });
       console.log('rowData');
       console.log(this.rowData);
+      // this.app.detectChanges();
     });
   }
 
