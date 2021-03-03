@@ -1,5 +1,6 @@
-@import '~ag-grid-community/dist/styles/ag-grid.css';
-@import '~ag-grid-community/dist/styles/ag-theme-alpine.css';
+@import "../node_modules/@ag-grid-community/core/dist/styles/ag-grid.css";
+@import "../node_modules/@ag-grid-community/core/dist/styles/ag-theme-alpine/sass/ag-theme-alpine.scss";
+ 
 
 .buttonClick {
     color: white;
@@ -24,3 +25,5 @@
       transition: 0.1s;
     }
   }
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
