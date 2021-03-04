@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { RequestsService } from 'src/app/shared/services/requests.service';
 import { DataService } from './data.service';
+import { FormsModule } from '@angular/forms';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 // import { Clipboard } from "@angular/cdk/clipboard"
 
@@ -20,7 +21,7 @@ interface IRowData {
   styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnInit, OnDestroy {
-  searchValue = '';
+  searchValue: string = '';
   countAllcase: number;
   countSelectedCase: number;
   public gridOptions: GridOptions;
@@ -53,12 +54,12 @@ export class MainComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getContextMenuItems = this.getContextMenuItemsFunc;
     this.rowData = [
-      {
-        description: 'string',
-        publishedAt: 'string',
-        thumbnails: 'string',
-        title: { snippet: { description: 'sdfgsdfgsdfgs' } }
-      }
+      // {
+      //   description: 'string',
+      //   publishedAt: 'string',
+      //   thumbnails: 'string',
+      //   title: { snippet: { description: 'sdfgsdfgsdfgs' } }
+      // }
     ];
 
   }

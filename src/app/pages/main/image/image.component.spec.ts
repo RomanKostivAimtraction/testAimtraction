@@ -8,9 +8,9 @@ describe('ImageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ImageComponent ]
+      declarations: [ImageComponent]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +19,11 @@ describe('ImageComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  // test('should create', () => {
+  //   expect(component).toBe(true);
+  // })
+
+  // it('should create', () => {
+  //   expect(component).toBeTruthy();
+  // });
 });
