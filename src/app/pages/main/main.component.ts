@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { RequestsService } from 'src/app/shared/services/requests.service';
 import { DataService } from './data.service';
-import { FormsModule } from '@angular/forms';
+
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 // import { Clipboard } from "@angular/cdk/clipboard"
 
@@ -13,6 +13,12 @@ interface IRowData {
   thumbnails: string;
   title: object;
 }
+
+// interface IContextMenu {
+//   name: string,
+//   openNewTab: Function,
+//   cssClasses: Array<string>,
+// }
 
 
 @Component({
@@ -66,19 +72,19 @@ export class MainComponent implements OnInit, OnDestroy {
 
   getContextMenuItemsFunc(params) {
     console.log(params);
-    if(params.column.colDef.field == 'title'){
+    if (params.column.colDef.field == 'title') {
       return [
         {
           name: 'Open in new tab',
-          action(){
-            window.open(`https://www.youtube.com/watch?v=${params.node.data.title.id.videoId}`,'_blank');
+          action() {
+            window.open(`https://www.youtube.com/watch?v=${params.node.data.title.id.videoId}`, '_blank');
           },
           cssClasses: ['redFont', 'bold'],
         },
         'separator',
         'copy',
         'copyWithHeaders',
-        
+
       ];
     } else {
       return [
@@ -87,7 +93,7 @@ export class MainComponent implements OnInit, OnDestroy {
         'copyWithHeaders',
       ];
     }
-    
+
 
     // return result;
   }
