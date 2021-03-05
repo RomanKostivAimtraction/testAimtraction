@@ -1,6 +1,5 @@
 import { GridOptions, Module } from '@ag-grid-community/core';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
 import { RequestsService } from 'src/app/shared/services/requests.service';
 import { DataService } from './data.service';
 
@@ -45,7 +44,6 @@ export class MainComponent implements OnInit, OnDestroy {
   constructor(
     private requestService: RequestsService,
     public dataService: DataService,
-    private toastr: ToastrService,
     // private clipboard: Clipboard
   ) {
     this.gridOptions = {
@@ -88,7 +86,6 @@ export class MainComponent implements OnInit, OnDestroy {
       ];
     } else {
       return [
-        'separator',
         'copy',
         'copyWithHeaders',
       ];
@@ -117,6 +114,9 @@ export class MainComponent implements OnInit, OnDestroy {
     const apiKey = 'AIzaSyB3GVWc8NIjn8B2-BbzW-AOko2lfOHgTKw';
     const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&maxResults=20&type=video&part=snippet&q=${this.searchValue}`;
     const request = this.requestService.getInfo(url).subscribe(res => {
+      console.log('answare from youtube');
+      console.log(res);
+      
       this.spinerIsLoading = false;
       this.countAllcase = res.items.length;
 
@@ -131,9 +131,7 @@ export class MainComponent implements OnInit, OnDestroy {
       console.log('rowData');
       console.log(this.rowData);
       request.unsubscribe();
-    }, (err: any) => {
-      this.toastr.error('Мати Василева! Шось пішло не так')
-    });
+    }, (err: any) => {});
   }
 
 

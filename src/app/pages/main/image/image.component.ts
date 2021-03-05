@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
+// interface IParams {
+//   value?: string
+// }
+
 @Component({
   selector: 'app-image',
   templateUrl: './image.component.html',
@@ -7,11 +11,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ImageComponent {
 
-  params: any;
-  constructor(){}
+  url: string;
+  constructor() { }
 
-  agInit(params: any) {
-    this.params = params;
+  agInit(params: any): void {
+    this.url = params.value;
   }
 
 }

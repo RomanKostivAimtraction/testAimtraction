@@ -16,14 +16,26 @@ describe('ImageComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ImageComponent);
     component = fixture.componentInstance;
+
     fixture.detectChanges();
   });
 
-  // test('should create', () => {
-  //   expect(component).toBe(true);
-  // })
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should get url for image', () => {
+    const params = {
+      value: 'urlstring'
+    };
+    component.agInit(params);
+    // expect(component.agInit(params)).toBe(params.value);
+    expect(component.url).toContain('urlstring');
+  });
+
+  // it('html have class image', () => {
+
+  //   expect(fixture.nativeElement.querySelector('.image').firstChild).toContain();
   // });
 });

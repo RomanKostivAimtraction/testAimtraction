@@ -11,7 +11,7 @@ export class RequestsService {
   ) { }
 
   getInfo(url) {
-    return this.http
-      .get<any>(`${url}`);
+    return this.http.get<any>(`${url}`);
   }
+
 }

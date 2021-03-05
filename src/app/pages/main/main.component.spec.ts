@@ -1,4 +1,5 @@
 import { AgGridModule } from '@ag-grid-community/angular';
+import { HttpClientModule } from '@angular/common/http';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 
@@ -13,7 +14,8 @@ describe('MainComponent', () => {
       declarations: [MainComponent],
       imports: [
         FormsModule,
-        AgGridModule.withComponents([MainComponent])
+        AgGridModule.withComponents([MainComponent]),
+        HttpClientModule
       ],
     })
       .compileComponents();
