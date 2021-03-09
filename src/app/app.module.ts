@@ -15,6 +15,9 @@ import { MenuModule } from '@ag-grid-enterprise/menu';
 import { ModuleRegistry } from '@ag-grid-community/core';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { ClipboardModule } from '@ag-grid-enterprise/clipboard';
+import { RequestsService } from './shared/services/requests.service';
+import { environment } from '../environments/environment';
+
 
 ModuleRegistry.registerModules([
   ClientSideRowModelModule,
@@ -38,9 +41,9 @@ ModuleRegistry.registerModules([
     ToastrModule.forRoot(),
     FormsModule,
     AgGridModule.withComponents([ImageComponent]),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
-  providers: [],
+  providers: [RequestsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
