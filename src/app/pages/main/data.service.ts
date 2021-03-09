@@ -47,9 +47,7 @@ export class DataService {
 
 
   videoTitleLink(params) {
-    return `<a href="https://www.youtube.com/watch?v=${params.value.id.videoId}" target="_blank" rel="noopener">` + params.value.snippet.title + `</a>`;
+    const [id, title] = [params.value.id.videoId, params.value.snippet.title];
+    return `<a href="https://www.youtube.com/watch?v=${id}"target="_blank" rel="noopener">${title}</a>`;
   }
-
-
-
 }
