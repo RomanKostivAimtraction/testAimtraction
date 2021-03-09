@@ -2,6 +2,7 @@ import { GridOptions, Module } from '@ag-grid-community/core';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RequestsService } from 'src/app/shared/services/requests.service';
 import { DataService } from './data.service';
+import { take } from 'rxjs/operators';
 
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 // import { Clipboard } from "@angular/cdk/clipboard"
@@ -12,6 +13,7 @@ interface IRowData {
   thumbnails: string;
   title: object;
 }
+
 
 // interface IContextMenu {
 //   name: string,
@@ -36,7 +38,9 @@ export class MainComponent implements OnInit, OnDestroy {
 
   rowData: Array<IRowData>;
 
-  getContextMenuItems: any;
+  getContextMenuItems: Function;
+
+  request: any;
 
 
 
@@ -70,29 +74,24 @@ export class MainComponent implements OnInit, OnDestroy {
 
   getContextMenuItemsFunc(params) {
     console.log(params);
-    if (params.column.colDef.field == 'title') {
-      return [
-        {
-          name: 'Open in new tab',
-          action() {
-            window.open(`https://www.youtube.com/watch?v=${params.node.data.title.id.videoId}`, '_blank');
-          },
-          cssClasses: ['redFont', 'bold'],
-        },
-        'separator',
-        'copy',
-        'copyWithHeaders',
+    let contextArray: Array<any> = [ // need know true interfase for array
+      'copy',
+      'copyWithHeaders'
+    ]
 
-      ];
-    } else {
-      return [
-        'copy',
-        'copyWithHeaders',
-      ];
+    if (params.column.colDef.field == 'title') {
+      contextArray.push('separator');
+      contextArray.push({
+        name: 'Open in new tab',
+        action() {
+          window.open(`https://www.youtube.com/watch?v=${params.node.data.title.id.videoId}`, '_blank');
+        },
+        cssClasses: ['redFont', 'bold'],
+      });
+
     }
 
-
-    // return result;
+    return contextArray;
   }
 
 
@@ -113,10 +112,10 @@ export class MainComponent implements OnInit, OnDestroy {
     this.spinerIsLoading = true;
     const apiKey = 'AIzaSyB3GVWc8NIjn8B2-BbzW-AOko2lfOHgTKw';
     const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&maxResults=20&type=video&part=snippet&q=${this.searchValue}`;
-    const request = this.requestService.getInfo(url).subscribe(res => {
+    this.request = this.requestService.getInfo(url).pipe(take(1)).subscribe(res => {
       console.log('answare from youtube');
       console.log(res);
-      
+
       this.spinerIsLoading = false;
       this.countAllcase = res.items.length;
 
@@ -130,8 +129,7 @@ export class MainComponent implements OnInit, OnDestroy {
       });
       console.log('rowData');
       console.log(this.rowData);
-      request.unsubscribe();
-    }, (err: any) => {});
+    }, (err: any) => { });
   }
 
 
