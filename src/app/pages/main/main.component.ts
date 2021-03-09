@@ -28,7 +28,7 @@ interface IRowData {
   styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnInit, OnDestroy {
-  searchValue: string = '';
+  searchValue = '';
   countAllcase: number;
   countSelectedCase: number;
   public gridOptions: GridOptions;
@@ -38,7 +38,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
   rowData: Array<IRowData>;
 
-  getContextMenuItems: Function;
+  getContextMenuItems: any;
 
   request: any;
 
@@ -74,12 +74,12 @@ export class MainComponent implements OnInit, OnDestroy {
 
   getContextMenuItemsFunc(params) {
     console.log(params);
-    let contextArray: Array<any> = [ // need know true interfase for array
+    const contextArray: Array<any> = [ // need know true interfase for array
       'copy',
       'copyWithHeaders'
-    ]
+    ];
 
-    if (params.column.colDef.field == 'title') {
+    if (params.column.colDef.field === 'title') {
       contextArray.push('separator');
       contextArray.push({
         name: 'Open in new tab',

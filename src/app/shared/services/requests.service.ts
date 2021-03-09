@@ -14,6 +14,4 @@ export class RequestsService {
   getInfo(url): Observable<any> {
     return this.http.get<any>(`${url}`);
   }
-  
-
 }
