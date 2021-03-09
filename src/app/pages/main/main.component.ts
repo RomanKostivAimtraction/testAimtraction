@@ -14,6 +14,14 @@ interface IRowData {
   title: object;
 }
 
+interface IDataYoutube {
+  items?: Array<{ snippet: { thumbnails: { medium: { url: string } }, publishedAt: string, description: string } }>;
+  etag?: string;
+  kind?: string;
+  nextPageToken?: string;
+  regionCode?: string;
+  pageInfo?: object;
+}
 
 // interface IContextMenu {
 //   name: string,
@@ -112,7 +120,7 @@ export class MainComponent implements OnInit, OnDestroy {
     this.spinerIsLoading = true;
     const apiKey = 'AIzaSyB3GVWc8NIjn8B2-BbzW-AOko2lfOHgTKw';
     const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&maxResults=20&type=video&part=snippet&q=${this.searchValue}`;
-    this.request = this.requestService.getInfo(url).pipe(take(1)).subscribe(res => {
+    this.request = this.requestService.getInfo<IDataYoutube>(url).pipe(take(1)).subscribe(res => {
       console.log('answare from youtube');
       console.log(res);
 
