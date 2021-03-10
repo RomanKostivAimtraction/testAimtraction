@@ -44,7 +44,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
   spinerIsLoading = false;
 
-  rowData: Array<IRowData>;
+  rowData: IRowData[];
 
   getContextMenuItems: any;
 
@@ -69,15 +69,6 @@ export class MainComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getContextMenuItems = this.getContextMenuItemsFunc;
-    this.rowData = [
-      // {
-      //   description: 'string',
-      //   publishedAt: 'string',
-      //   thumbnails: 'string',
-      //   title: { snippet: { description: 'sdfgsdfgsdfgs' } }
-      // }
-    ];
-
   }
 
   getContextMenuItemsFunc(params) {
