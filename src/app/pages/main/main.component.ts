@@ -5,6 +5,8 @@ import { DataService } from './data.service';
 import { take } from 'rxjs/operators';
 
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
+import { Store } from '@ngrx/store';
+import { countAllRowsSelector, countArrRows, countSelectedRows, countSelectedRowsSelector } from 'src/app/reducers/main.reducer';
 // import { Clipboard } from "@angular/cdk/clipboard"
 
 interface IRowData {
@@ -37,8 +39,8 @@ interface IDataYoutube {
 })
 export class MainComponent implements OnInit, OnDestroy {
   searchValue = '';
-  countAllcase: number;
-  countSelectedCase: number;
+  // countAllcase: number;
+  // countSelectedCase: number;
   public gridOptions: GridOptions;
   modules: Module[] = [ClientSideRowModelModule];
 
@@ -50,12 +52,17 @@ export class MainComponent implements OnInit, OnDestroy {
 
   request: any;
 
+  // changeMode$ = this.store.select(modeChecboxSelector);
+  countAllRows$ = this.store.select(countAllRowsSelector);
+  countSelectedRows$ = this.store.select(countSelectedRowsSelector);
+
 
 
 
   constructor(
     private requestService: RequestsService,
     public dataService: DataService,
+    private store: Store
     // private clipboard: Clipboard
   ) {
     this.gridOptions = {
@@ -96,7 +103,8 @@ export class MainComponent implements OnInit, OnDestroy {
 
   rowSelected() {
     console.log(this.gridOptions.api.getSelectedRows());
-    this.countSelectedCase = this.gridOptions.api.getSelectedRows().length;
+    // this.countSelectedCase = this.gridOptions.api.getSelectedRows().length;
+    this.store.dispatch(countSelectedRows());
   }
 
   changeMode() {
@@ -116,7 +124,8 @@ export class MainComponent implements OnInit, OnDestroy {
       console.log(res);
 
       this.spinerIsLoading = false;
-      this.countAllcase = res.items.length;
+      // this.countAllcase = res.items.length;
+      this.store.dispatch(countArrRows());
 
       this.rowData = res.items.map(elem => {
         return {

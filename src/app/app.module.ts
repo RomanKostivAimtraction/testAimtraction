@@ -17,13 +17,14 @@ import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-mod
 import { ClipboardModule } from '@ag-grid-enterprise/clipboard';
 import { RequestsService } from './shared/services/requests.service';
 import { environment } from '../environments/environment';
-
-// ----NgRx
 import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './app.effects';
+
+// ----NgRx
+
 
 
 
@@ -52,15 +53,7 @@ ModuleRegistry.registerModules([
     AgGridModule.withComponents([ImageComponent]),
     BrowserAnimationsModule,
     StoreModule.forRoot(reducers, {
-      metaReducers,
-      runtimeChecks: {
-        strictStateImmutability: true,
-        strictActionImmutability: true,
-        strictStateSerializability: true,
-        strictActionSerializability: true,
-        strictActionWithinNgZone: true,
-        strictActionTypeUniqueness: true,
-      },
+      metaReducers
     }),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     EffectsModule.forRoot([AppEffects]),

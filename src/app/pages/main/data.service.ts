@@ -7,6 +7,8 @@ import { ImageComponent } from '../main/image/image.component';
 })
 export class DataService {
 
+
+
   columnDefs = [
     {
       headerName: '',
@@ -39,7 +41,9 @@ export class DataService {
     },
     { headerName: 'Description', field: 'description', sortable: true, filter: true, },
   ];
-  constructor() { }
+  
+  constructor() { 
+  }
 
   dataFormater(date) {
     return `${date.slice(8, 10)}.${date.slice(5, 7)}.${date.slice(0, 4)}`;

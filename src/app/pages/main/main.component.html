@@ -6,11 +6,11 @@
     <div class="infoPanel">
         <div class="box">
             <span>all rows</span>
-            <input type="number" [(ngModel)]="countAllcase" name="countAllcase">
+            {{countAllRows$ | async}}
         </div>
         <div class="box">
             <span>selected rows</span>
-            <input type="number" [(ngModel)]="countSelectedCase" name="countSelectedCase">
+            {{countSelectedRows$ | async}}
         </div>
         <button class="buttonClick" (click)="changeMode()">Change mode</button>
     </div>
