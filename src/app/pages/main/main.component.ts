@@ -1,10 +1,12 @@
 import { GridOptions, Module } from '@ag-grid-community/core';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { RequestsService } from 'src/app/shared/services/requests.service';
+import { RequestsService } from '../../shared/services/requests.service';
 import { DataService } from './data.service';
 import { take } from 'rxjs/operators';
 
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
+import { Store } from '@ngrx/store';
+import { countAllRowsSelector, countAllRows, countSelectedRows, countSelectedRowsSelector } from 'src/app/reducers/main.reducer';
 // import { Clipboard } from "@angular/cdk/clipboard"
 
 interface IRowData {
@@ -37,18 +39,22 @@ interface IDataYoutube {
 })
 export class MainComponent implements OnInit, OnDestroy {
   searchValue = '';
-  countAllcase: number;
-  countSelectedCase: number;
+  // countAllcase: number;
+  // countSelectedCase: number;
   public gridOptions: GridOptions;
   modules: Module[] = [ClientSideRowModelModule];
 
   spinerIsLoading = false;
 
-  rowData: Array<IRowData>;
+  rowData: IRowData[];
 
   getContextMenuItems: any;
 
   request: any;
+
+  // changeMode$ = this.store.select(modeChecboxSelector);
+  countAllRows$ = this.store.select(countAllRowsSelector);
+  countSelectedRows$ = this.store.select(countSelectedRowsSelector);
 
 
 
@@ -56,6 +62,7 @@ export class MainComponent implements OnInit, OnDestroy {
   constructor(
     private requestService: RequestsService,
     public dataService: DataService,
+    private store: Store
     // private clipboard: Clipboard
   ) {
     this.gridOptions = {
@@ -69,15 +76,6 @@ export class MainComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getContextMenuItems = this.getContextMenuItemsFunc;
-    this.rowData = [
-      // {
-      //   description: 'string',
-      //   publishedAt: 'string',
-      //   thumbnails: 'string',
-      //   title: { snippet: { description: 'sdfgsdfgsdfgs' } }
-      // }
-    ];
-
   }
 
   getContextMenuItemsFunc(params) {
@@ -105,7 +103,9 @@ export class MainComponent implements OnInit, OnDestroy {
 
   rowSelected() {
     console.log(this.gridOptions.api.getSelectedRows());
-    this.countSelectedCase = this.gridOptions.api.getSelectedRows().length;
+    const countRow = this.gridOptions.api.getSelectedRows().length;
+    // this.countSelectedCase = this.gridOptions.api.getSelectedRows().length;
+    this.store.dispatch(countSelectedRows());
   }
 
   changeMode() {
@@ -125,7 +125,8 @@ export class MainComponent implements OnInit, OnDestroy {
       console.log(res);
 
       this.spinerIsLoading = false;
-      this.countAllcase = res.items.length;
+      // this.countAllcase = res.items.length;
+      this.store.dispatch(countArrRows());
 
       this.rowData = res.items.map(elem => {
         return {
