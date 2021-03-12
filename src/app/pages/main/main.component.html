@@ -3,8 +3,11 @@
 
         <div class="col-md-3">
             <mat-form-field>
-                <input matInput type="text" placeholder="Search..." formControlName='searchValue'>
+                <input matInput type="text" placeholder="Search..." formControlName='searchValue' required>
             </mat-form-field>
+            <mat-error *ngIf="myForm.get('searchValue').errors && myForm.get('searchValue').touched">
+                You must enter a value
+            </mat-error>
         </div>
         <div class="col-md-1">
             <mat-icon matDatepickerToggleIcon svgIcon="search" (click)="getInfo()" matTooltip="press to search"
@@ -15,13 +18,13 @@
         <div class="col-md-1">
             <mat-form-field>
                 <mat-label>All rows</mat-label>
-                <input matInput type="number" [value]='countAllRows$ | async'>
+                <input matInput type="number" [value]='countAllRows$ | async' readonly>
             </mat-form-field>
         </div>
         <div class="col-md-1">
             <mat-form-field>
                 <mat-label>Seected rows</mat-label>
-                <input matInput type="number" [value]='countSelectedRows$ | async'>
+                <input matInput type="number" [value]='countSelectedRows$ | async' readonly>
             </mat-form-field>
         </div>
         <div class="col-md-1">

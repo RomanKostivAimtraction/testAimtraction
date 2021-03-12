@@ -1,5 +1,5 @@
 import { GridOptions, Module } from '@ag-grid-community/core';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RequestsService } from '../../shared/services/requests.service';
 import { DataService } from './data.service';
 import { take } from 'rxjs/operators';
@@ -7,10 +7,11 @@ import { take } from 'rxjs/operators';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { Store } from '@ngrx/store';
 import { countAllRowsSelector, countAllRows, countSelectedRows, countSelectedRowsSelector } from 'src/app/reducers/main.reducer';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ToastrService } from 'ngx-toastr';
 
 interface IRowData {
   description: string;
@@ -59,6 +60,7 @@ export class MainComponent implements OnInit {
     private fb: FormBuilder,
     private matIconRegistry: MatIconRegistry, // add custom icon
     private domSanitizer: DomSanitizer,// add custom icon
+    private toastr: ToastrService
   ) {
     this.matIconRegistry.addSvgIcon('search', this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/search.svg'));
 
@@ -108,6 +110,7 @@ export class MainComponent implements OnInit {
   }
 
   changeMode(value) {
+    if(value) this.gridOptions.api.deselectAll();
     this.dataService.columnDefs[0].checkboxSelection = value;
     this.dataService.columnDefs[0].headerCheckboxSelection = value;
     this.gridOptions.api.setColumnDefs(this.dataService.columnDefs);
@@ -115,37 +118,43 @@ export class MainComponent implements OnInit {
   }
 
   getInfo() {
+    if (this.myForm.invalid) {
+      this.myForm.markAllAsTouched();
+      this.toastr.warning('Sorry! Search place is empty ')
+    } else {
+      this.spinerIsLoading = true;
+      const apiKey = 'AIzaSyB3GVWc8NIjn8B2-BbzW-AOko2lfOHgTKw';
+      const searchValue = this.myForm.get('searchValue').value;
+      console.log('searchValue');
+      console.log(this.myForm.get('searchValue').value);
 
-    this.spinerIsLoading = true;
-    const apiKey = 'AIzaSyB3GVWc8NIjn8B2-BbzW-AOko2lfOHgTKw';
-    const searchValue = this.myForm.get('searchValue').value;
-    console.log('searchValue');
-    console.log(this.myForm.get('searchValue').value);
-    
-    const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&maxResults=20&type=video&part=snippet&q=${searchValue}`;
-    this.request = this.requestService.getInfo<IDataYoutube>(url).pipe(take(1)).subscribe(res => {
-      console.log('answare from youtube');
-      console.log(res);
+      const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&maxResults=20&type=video&part=snippet&q=${searchValue}`;
+      this.request = this.requestService.getInfo<IDataYoutube>(url).pipe(take(1)).subscribe(res => {
+        console.log('answare from youtube');
+        console.log(res);
 
-      this.spinerIsLoading = false;
-      this.store.dispatch(countAllRows({ countRow: res.items.length }));
+        this.spinerIsLoading = false;
+        this.store.dispatch(countAllRows({ countRow: res.items.length }));
 
-      this.rowData = res.items.map(elem => {
-        return {
-          thumbnails: elem.snippet.thumbnails.medium.url,
-          publishedAt: elem.snippet.publishedAt,
-          title: elem,
-          description: elem.snippet.description,
-        };
-      });
-      console.log('rowData');
-      console.log(this.rowData);
-    }, (err: any) => (console.log(err)));
+        this.rowData = res.items.map(elem => {
+          return {
+            thumbnails: elem.snippet.thumbnails.medium.url,
+            publishedAt: elem.snippet.publishedAt,
+            title: elem,
+            description: elem.snippet.description,
+          };
+        });
+        console.log('rowData');
+        console.log(this.rowData);
+      }, (err: any) => (console.log(err)));
+    }
+
+
   }
 
   reactiveForm() {
     this.myForm = this.fb.group({
-      searchValue: [''],
+      searchValue: ['', Validators.required],
       mode: [true],
     })
   }
