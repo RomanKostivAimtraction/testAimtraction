@@ -59,7 +59,7 @@ export class MainComponent implements OnInit {
     private store: Store,
     private fb: FormBuilder,
     private matIconRegistry: MatIconRegistry, // add custom icon
-    private domSanitizer: DomSanitizer,// add custom icon
+    private domSanitizer: DomSanitizer, // add custom icon
     private toastr: ToastrService
   ) {
     this.matIconRegistry.addSvgIcon('search', this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/search.svg'));
@@ -106,11 +106,13 @@ export class MainComponent implements OnInit {
     console.log('countRow');
     console.log(countRow);
 
-    this.store.dispatch(countSelectedRows({ countRow: countRow }));
+    this.store.dispatch(countSelectedRows({ countRow }));
   }
 
   changeMode(value) {
-    if(value) this.gridOptions.api.deselectAll();
+    if (value) {
+      this.gridOptions.api.deselectAll();
+    }
     this.dataService.columnDefs[0].checkboxSelection = value;
     this.dataService.columnDefs[0].headerCheckboxSelection = value;
     this.gridOptions.api.setColumnDefs(this.dataService.columnDefs);
@@ -120,7 +122,7 @@ export class MainComponent implements OnInit {
   getInfo() {
     if (this.myForm.invalid) {
       this.myForm.markAllAsTouched();
-      this.toastr.warning('Sorry! Search place is empty ')
+      this.toastr.warning('Sorry! Search place is empty ');
     } else {
       this.spinerIsLoading = true;
       const apiKey = 'AIzaSyB3GVWc8NIjn8B2-BbzW-AOko2lfOHgTKw';
@@ -156,7 +158,7 @@ export class MainComponent implements OnInit {
     this.myForm = this.fb.group({
       searchValue: ['', Validators.required],
       mode: [true],
-    })
+    });
   }
 
 

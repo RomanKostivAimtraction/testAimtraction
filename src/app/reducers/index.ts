@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 import { checkBoxModeReducer, IRows, SELECTROWS_KEY } from './main.reducer';
 
 export interface State {
-  [SELECTROWS_KEY]: IRows
+  [SELECTROWS_KEY]: IRows;
 }
 
 export const reducers: ActionReducerMap<State> = {
