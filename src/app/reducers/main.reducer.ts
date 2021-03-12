@@ -1,8 +1,8 @@
-import { createAction, createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
+import { createAction, createFeatureSelector, createReducer, createSelector, on, props } from "@ngrx/store";
 
 export const SELECTROWS_KEY = 'selectRows'
 
-export const countArrRows = createAction('[MAIN] changeMode');
+export const countAllRows = createAction('[MAIN] changeMode', props<{ countRow: number }>());
 export const countSelectedRows = createAction('[MAIN] changeMode');
 
 export interface IRows {
@@ -17,7 +17,7 @@ export const rowsState: IRows = {
 
 export const checkBoxModeReducer = createReducer(
     rowsState,
-    on(countArrRows, state => ({
+    on(countAllRows, state => ({
         ...state,
         countAllRows: state.countAllRows
     })),

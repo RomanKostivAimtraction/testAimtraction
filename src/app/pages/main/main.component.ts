@@ -6,7 +6,7 @@ import { take } from 'rxjs/operators';
 
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { Store } from '@ngrx/store';
-import { countAllRowsSelector, countArrRows, countSelectedRows, countSelectedRowsSelector } from 'src/app/reducers/main.reducer';
+import { countAllRowsSelector, countAllRows, countSelectedRows, countSelectedRowsSelector } from 'src/app/reducers/main.reducer';
 // import { Clipboard } from "@angular/cdk/clipboard"
 
 interface IRowData {
@@ -103,6 +103,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
   rowSelected() {
     console.log(this.gridOptions.api.getSelectedRows());
+    const countRow = this.gridOptions.api.getSelectedRows().length;
     // this.countSelectedCase = this.gridOptions.api.getSelectedRows().length;
     this.store.dispatch(countSelectedRows());
   }
