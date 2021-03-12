@@ -2,8 +2,8 @@ import { createAction, createFeatureSelector, createReducer, createSelector, on,
 
 export const SELECTROWS_KEY = 'selectRows'
 
-export const countAllRows = createAction('[MAIN] changeMode', props<{ countRow: number }>());
-export const countSelectedRows = createAction('[MAIN] changeMode');
+export const countAllRows = createAction('[MAIN] countAllRows', props<{ countRow: number }>());
+export const countSelectedRows = createAction('[MAIN] countSelectedRows', props<{ countRow: number }>());
 
 export interface IRows {
     countAllRows: number,
@@ -17,13 +17,13 @@ export const rowsState: IRows = {
 
 export const checkBoxModeReducer = createReducer(
     rowsState,
-    on(countAllRows, state => ({
+    on(countAllRows, (state, action) => ({
         ...state,
-        countAllRows: state.countAllRows
+        countAllRows: action.countRow
     })),
-    on(countSelectedRows, state => ({
+    on(countSelectedRows, (state, action) => ({       
         ...state,
-        countSelectedRows: state.countSelectedRows
+        countSelectedRows: action.countRow
     }))
 )
 

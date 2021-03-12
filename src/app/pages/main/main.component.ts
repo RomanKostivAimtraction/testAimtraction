@@ -103,9 +103,12 @@ export class MainComponent implements OnInit, OnDestroy {
 
   rowSelected() {
     console.log(this.gridOptions.api.getSelectedRows());
-    const countRow = this.gridOptions.api.getSelectedRows().length;
+    const countRow: number = this.gridOptions.api.getSelectedRows().length;
     // this.countSelectedCase = this.gridOptions.api.getSelectedRows().length;
-    this.store.dispatch(countSelectedRows());
+    console.log('countRow');
+    console.log(countRow);
+    
+    this.store.dispatch(countSelectedRows({countRow: countRow}));
   }
 
   changeMode() {
@@ -126,7 +129,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
       this.spinerIsLoading = false;
       // this.countAllcase = res.items.length;
-      this.store.dispatch(countArrRows());
+      this.store.dispatch(countAllRows({countRow: res.items.length}));
 
       this.rowData = res.items.map(elem => {
         return {
