@@ -2,7 +2,7 @@ import { GridOptions, Module } from '@ag-grid-community/core';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RequestsService } from '../../shared/services/requests.service';
 import { DataService } from './data.service';
-import { take } from 'rxjs/operators';
+import { take } from 'rxjs/operators'; 
 
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { Store } from '@ngrx/store';
