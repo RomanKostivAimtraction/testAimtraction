@@ -8,7 +8,9 @@ import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-mod
 import { Store } from '@ngrx/store';
 import { countAllRowsSelector, countAllRows, countSelectedRows, countSelectedRowsSelector } from 'src/app/reducers/main.reducer';
 import { FormBuilder, FormGroup } from '@angular/forms';
-// import { Clipboard } from "@angular/cdk/clipboard"
+
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 interface IRowData {
   description: string;
@@ -54,8 +56,12 @@ export class MainComponent implements OnInit {
     private requestService: RequestsService,
     public dataService: DataService,
     private store: Store,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private matIconRegistry: MatIconRegistry, // add custom icon
+    private domSanitizer: DomSanitizer,// add custom icon
   ) {
+    this.matIconRegistry.addSvgIcon('search', this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/search.svg'));
+
     this.gridOptions = {
       onGridReady: () => {
         this.gridOptions.api.sizeColumnsToFit();

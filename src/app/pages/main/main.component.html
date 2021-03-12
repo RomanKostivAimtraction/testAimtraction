@@ -1,23 +1,38 @@
-<div class="panel">
-    <form [formGroup]='myForm'>
-        <div class="searchPlace">
-            <input type="text" placeholder="write text..." formGroupName = 'searchValue'>
-            <button (click)="getInfo()" class="buttonClick">Search</button>
+<form [formGroup]='myForm'>
+    <div class="row mt-4 pl-4">
+
+        <div class="col-md-3">
+            <mat-form-field>
+                <input matInput type="text" placeholder="Search..." formGroupName='searchValue'>
+            </mat-form-field>
         </div>
-    </form>
-    <div class="infoPanel">
-        <div class="box">
-            <span>all rows</span>
-            {{countAllRows$ | async}}
+        <div class="col-md-1">
+            <mat-icon matDatepickerToggleIcon svgIcon="search" (click)="getInfo()" matTooltip="press to search"
+                [matTooltipPosition]="'above'">
+            </mat-icon>
+            <!-- <button  class="buttonClick">Search</button> -->
         </div>
-        <div class="box">
-            <span>selected rows</span>
-            {{countSelectedRows$ | async}}
+        <div class="col-md-1">
+            <mat-form-field>
+                <mat-label>All rows</mat-label>
+                <input matInput type="number" [value]='countAllRows$ | async'>
+            </mat-form-field>
         </div>
-        <button class="buttonClick" (click)="changeMode()">Change mode</button>
+        <div class="col-md-1">
+            <mat-form-field>
+                <mat-label>Seected rows</mat-label>
+                <input matInput type="number" [value]='countSelectedRows$ | async'>
+            </mat-form-field>
+        </div>
+        <div class="col-md-1">
+
+            <mat-slide-toggle (change)="changeMode()">Slide me!</mat-slide-toggle>
+
+        </div>
+
     </div>
-
-
+</form>
+<div class="row">
     <div class="spiner" *ngIf="spinerIsLoading">
         <img src="assets/icons/spiner.gif" alt="">
     </div>
@@ -26,12 +41,7 @@
 
 
 
-
-
-
-
-
-<ag-grid-angular style="width: 100%; height: 700px;" class="ag-theme-alpine" [gridOptions]="gridOptions"
+<ag-grid-angular style="width: 100%; height: 100%;" class="ag-theme-alpine" [gridOptions]="gridOptions"
     [rowData]="rowData" [modules]="modules" [columnDefs]="dataService.columnDefs" rowSelection='multiple'
     (rowSelected)="rowSelected()" [getContextMenuItems]="getContextMenuItems">
 </ag-grid-angular>
