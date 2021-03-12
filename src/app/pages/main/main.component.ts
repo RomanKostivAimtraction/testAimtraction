@@ -2,7 +2,7 @@ import { GridOptions, Module } from '@ag-grid-community/core';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RequestsService } from '../../shared/services/requests.service';
 import { DataService } from './data.service';
-import { take } from 'rxjs/operators'; 
+import { take } from 'rxjs/operators';
 
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { Store } from '@ngrx/store';
@@ -25,34 +25,23 @@ interface IDataYoutube {
   pageInfo?: object;
 }
 
-// interface IContextMenu {
-//   name: string,
-//   openNewTab: Function,
-//   cssClasses: Array<string>,
-// }
-
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
 })
-export class MainComponent implements OnInit, OnDestroy {
+export class MainComponent implements OnInit {
   searchValue = '';
   // countAllcase: number;
   // countSelectedCase: number;
   public gridOptions: GridOptions;
   modules: Module[] = [ClientSideRowModelModule];
-
   spinerIsLoading = false;
-
   rowData: IRowData[];
-
   getContextMenuItems: any;
-
   request: any;
 
-  // changeMode$ = this.store.select(modeChecboxSelector);
   countAllRows$ = this.store.select(countAllRowsSelector);
   countSelectedRows$ = this.store.select(countSelectedRowsSelector);
 
@@ -63,14 +52,12 @@ export class MainComponent implements OnInit, OnDestroy {
     private requestService: RequestsService,
     public dataService: DataService,
     private store: Store
-    // private clipboard: Clipboard
   ) {
     this.gridOptions = {
       onGridReady: () => {
         this.gridOptions.api.sizeColumnsToFit();
       },
       rowHeight: 200,
-      // copyHeadersToClipboard: true
     };
   }
 
@@ -104,11 +91,10 @@ export class MainComponent implements OnInit, OnDestroy {
   rowSelected() {
     console.log(this.gridOptions.api.getSelectedRows());
     const countRow: number = this.gridOptions.api.getSelectedRows().length;
-    // this.countSelectedCase = this.gridOptions.api.getSelectedRows().length;
     console.log('countRow');
     console.log(countRow);
-    
-    this.store.dispatch(countSelectedRows({countRow: countRow}));
+
+    this.store.dispatch(countSelectedRows({ countRow: countRow }));
   }
 
   changeMode() {
@@ -128,8 +114,7 @@ export class MainComponent implements OnInit, OnDestroy {
       console.log(res);
 
       this.spinerIsLoading = false;
-      // this.countAllcase = res.items.length;
-      this.store.dispatch(countAllRows({countRow: res.items.length}));
+      this.store.dispatch(countAllRows({ countRow: res.items.length }));
 
       this.rowData = res.items.map(elem => {
         return {
@@ -141,14 +126,8 @@ export class MainComponent implements OnInit, OnDestroy {
       });
       console.log('rowData');
       console.log(this.rowData);
-    }, (err: any) => { });
+    }, (err: any) => (console.log(err)));
   }
 
-
-
-
-  ngOnDestroy(): void {
-    // this.request.unsubscribe();
-  }
 
 }

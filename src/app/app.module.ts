@@ -17,13 +17,16 @@ import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-mod
 import { ClipboardModule } from '@ag-grid-enterprise/clipboard';
 import { RequestsService } from './shared/services/requests.service';
 import { environment } from '../environments/environment';
+// ----NgRx
 import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './app.effects';
 
-// ----NgRx
+// ------
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+
 
 
 
@@ -41,7 +44,8 @@ ModuleRegistry.registerModules([
   declarations: [
     AppComponent,
     MainComponent,
-    ImageComponent
+    ImageComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,
