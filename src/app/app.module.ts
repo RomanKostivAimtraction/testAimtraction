@@ -1,12 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MainComponent } from './pages/main/main.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ImageComponent } from './pages/main/image/image.component';
-import { FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './shared/material/material.module';
@@ -52,6 +51,7 @@ ModuleRegistry.registerModules([
     AppRoutingModule,
     HttpClientModule,
     MaterialModule,
+    ReactiveFormsModule,
     ToastrModule.forRoot(),
     FormsModule,
     AgGridModule.withComponents([ImageComponent]),

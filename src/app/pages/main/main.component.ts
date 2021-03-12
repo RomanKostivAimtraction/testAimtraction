@@ -7,6 +7,7 @@ import { take } from 'rxjs/operators';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { Store } from '@ngrx/store';
 import { countAllRowsSelector, countAllRows, countSelectedRows, countSelectedRowsSelector } from 'src/app/reducers/main.reducer';
+import { FormBuilder, FormGroup } from '@angular/forms';
 // import { Clipboard } from "@angular/cdk/clipboard"
 
 interface IRowData {
@@ -32,7 +33,8 @@ interface IDataYoutube {
   styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnInit {
-  searchValue = '';
+  myForm: FormGroup;
+  // searchValue = '';
   // countAllcase: number;
   // countSelectedCase: number;
   public gridOptions: GridOptions;
@@ -51,7 +53,8 @@ export class MainComponent implements OnInit {
   constructor(
     private requestService: RequestsService,
     public dataService: DataService,
-    private store: Store
+    private store: Store,
+    private fb: FormBuilder
   ) {
     this.gridOptions = {
       onGridReady: () => {
@@ -62,6 +65,7 @@ export class MainComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.reactiveForm();
     this.getContextMenuItems = this.getContextMenuItemsFunc;
   }
 
@@ -108,7 +112,8 @@ export class MainComponent implements OnInit {
 
     this.spinerIsLoading = true;
     const apiKey = 'AIzaSyB3GVWc8NIjn8B2-BbzW-AOko2lfOHgTKw';
-    const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&maxResults=20&type=video&part=snippet&q=${this.searchValue}`;
+    const searchValue = this.myForm.get('searchValue').value;
+    const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&maxResults=20&type=video&part=snippet&q=${searchValue}`;
     this.request = this.requestService.getInfo<IDataYoutube>(url).pipe(take(1)).subscribe(res => {
       console.log('answare from youtube');
       console.log(res);
@@ -127,6 +132,12 @@ export class MainComponent implements OnInit {
       console.log('rowData');
       console.log(this.rowData);
     }, (err: any) => (console.log(err)));
+  }
+
+  reactiveForm() {
+    this.myForm = this.fb.group({
+      searchValue: ['']
+    })
   }
 
 
