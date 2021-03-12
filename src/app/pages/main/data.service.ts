@@ -15,34 +15,43 @@ export class DataService {
       field: 'checkBox',
       checkboxSelection: true,
       headerCheckboxSelection: true,
-      width: 10
+      width: 30
     },
     {
       headerName: '',
       field: 'thumbnails',
       sortable: true,
       filter: true,
-      cellRendererFramework: ImageComponent
+      cellRendererFramework: ImageComponent,
+
     },
     {
       headerName: 'Published on',
       field: 'publishedAt',
+      cellClass: 'dateGrid',
       sortable: true,
       filter: true,
-      valueFormatter: params => this.dataFormater(params.data.publishedAt)
+      valueFormatter: params => this.dataFormater(params.data.publishedAt),
     },
     {
       headerName: 'Video Title',
       field: 'title',
+      cellClass: 'titleGrid',
       sortable: true,
       filter: true,
       // preventDefaultOnContextMenu: onCellContextMenu,
       cellRenderer: params => this.videoTitleLink(params),
     },
-    { headerName: 'Description', field: 'description', sortable: true, filter: true, },
+    {
+      headerName: 'Description',
+      field: 'description',
+      cellClass: 'descriptonGrid',
+      sortable: true,
+      filter: true,
+    },
   ];
-  
-  constructor() { 
+
+  constructor() {
   }
 
   dataFormater(date) {

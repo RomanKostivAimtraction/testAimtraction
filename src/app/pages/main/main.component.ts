@@ -66,7 +66,7 @@ export class MainComponent implements OnInit {
       onGridReady: () => {
         this.gridOptions.api.sizeColumnsToFit();
       },
-      rowHeight: 200,
+      rowHeight: 230
     };
   }
 
@@ -107,9 +107,9 @@ export class MainComponent implements OnInit {
     this.store.dispatch(countSelectedRows({ countRow: countRow }));
   }
 
-  changeMode() {
-    this.dataService.columnDefs[0].checkboxSelection = !this.dataService.columnDefs[0].checkboxSelection;
-    this.dataService.columnDefs[0].headerCheckboxSelection = !this.dataService.columnDefs[0].headerCheckboxSelection;
+  changeMode(value) {
+    this.dataService.columnDefs[0].checkboxSelection = value;
+    this.dataService.columnDefs[0].headerCheckboxSelection = value;
     this.gridOptions.api.setColumnDefs(this.dataService.columnDefs);
     this.gridOptions.api.refreshCells();
   }
@@ -119,6 +119,9 @@ export class MainComponent implements OnInit {
     this.spinerIsLoading = true;
     const apiKey = 'AIzaSyB3GVWc8NIjn8B2-BbzW-AOko2lfOHgTKw';
     const searchValue = this.myForm.get('searchValue').value;
+    console.log('searchValue');
+    console.log(this.myForm.get('searchValue').value);
+    
     const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&maxResults=20&type=video&part=snippet&q=${searchValue}`;
     this.request = this.requestService.getInfo<IDataYoutube>(url).pipe(take(1)).subscribe(res => {
       console.log('answare from youtube');
@@ -142,7 +145,8 @@ export class MainComponent implements OnInit {
 
   reactiveForm() {
     this.myForm = this.fb.group({
-      searchValue: ['']
+      searchValue: [''],
+      mode: [true],
     })
   }
 

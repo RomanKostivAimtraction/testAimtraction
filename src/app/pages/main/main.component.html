@@ -3,7 +3,7 @@
 
         <div class="col-md-3">
             <mat-form-field>
-                <input matInput type="text" placeholder="Search..." formGroupName='searchValue'>
+                <input matInput type="text" placeholder="Search..." formControlName='searchValue'>
             </mat-form-field>
         </div>
         <div class="col-md-1">
@@ -26,7 +26,7 @@
         </div>
         <div class="col-md-1">
 
-            <mat-slide-toggle (change)="changeMode()">Slide me!</mat-slide-toggle>
+            <mat-slide-toggle formControlName='mode' (change)="changeMode($event.checked)">Slide me!</mat-slide-toggle>
 
         </div>
 
