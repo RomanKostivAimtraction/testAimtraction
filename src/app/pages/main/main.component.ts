@@ -1,6 +1,6 @@
 import { GridOptions, Module } from '@ag-grid-community/core';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { RequestsService } from 'src/app/shared/services/requests.service';
+import { RequestsService } from '../../shared/services/requests.service';
 import { DataService } from './data.service';
 import { take } from 'rxjs/operators';
 
