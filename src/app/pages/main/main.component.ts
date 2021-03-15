@@ -1,33 +1,26 @@
 import { GridOptions, Module } from '@ag-grid-community/core';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RequestsService } from '../../shared/services/requests.service';
 import { DataService } from './data.service';
-import { take } from 'rxjs/operators';
 
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { Store } from '@ngrx/store';
-import { countAllRowsSelector, countAllRows, countSelectedRows, countSelectedRowsSelector } from 'src/app/reducers/main.reducer';
+import { countAllRowsSelector, countSelectedRows, countSelectedRowsSelector, requeftFromYoutube, spinerIsLoadingSelector, YTdataSelector } from 'src/app/reducers/main.reducer';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { IRowData } from 'src/app/shared/interfaces/main';
 
-interface IRowData {
-  description: string;
-  publishedAt: string;
-  thumbnails: string;
-  title: object;
-}
-
-interface IDataYoutube {
-  items?: Array<{ snippet: { thumbnails: { medium: { url: string } }, publishedAt: string, description: string } }>;
-  etag?: string;
-  kind?: string;
-  nextPageToken?: string;
-  regionCode?: string;
-  pageInfo?: object;
-}
+// export interface IRowData {
+//   description: string;
+//   publishedAt: string;
+//   thumbnails: string;
+//   title: object;
+// }
 
 
 @Component({
@@ -35,32 +28,30 @@ interface IDataYoutube {
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss'],
 })
-export class MainComponent implements OnInit {
+export class MainComponent implements OnInit, OnDestroy {
   myForm: FormGroup;
-  // searchValue = '';
-  // countAllcase: number;
-  // countSelectedCase: number;
   public gridOptions: GridOptions;
   modules: Module[] = [ClientSideRowModelModule];
-  spinerIsLoading = false;
+  // spinerIsLoading = false;
   rowData: IRowData[];
   getContextMenuItems: any;
-  request: any;
-
+  destroy$ = new Subject<void>();
+  // ---store----
   countAllRows$ = this.store.select(countAllRowsSelector);
   countSelectedRows$ = this.store.select(countSelectedRowsSelector);
-
-
+  spinerIsLoading$ = this.store.select(spinerIsLoadingSelector);
+  YTdataSelector$ = this.store.select(YTdataSelector);
+  // --------
 
 
   constructor(
-    private requestService: RequestsService,
     public dataService: DataService,
     private store: Store,
     private fb: FormBuilder,
     private matIconRegistry: MatIconRegistry, // add custom icon
     private domSanitizer: DomSanitizer, // add custom icon
-    private toastr: ToastrService
+    private toastr: ToastrService,
+
   ) {
     this.matIconRegistry.addSvgIcon('search', this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/icons/search.svg'));
 
@@ -124,34 +115,14 @@ export class MainComponent implements OnInit {
       this.myForm.markAllAsTouched();
       this.toastr.warning('Sorry! Search place is empty ');
     } else {
-      this.spinerIsLoading = true;
-      const apiKey = 'AIzaSyB3GVWc8NIjn8B2-BbzW-AOko2lfOHgTKw';
-      const searchValue = this.myForm.get('searchValue').value;
-      console.log('searchValue');
-      console.log(this.myForm.get('searchValue').value);
+      this.store.dispatch(requeftFromYoutube({ searchValue: this.myForm.get('searchValue').value }));
 
-      const url = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&maxResults=20&type=video&part=snippet&q=${searchValue}`;
-      this.request = this.requestService.getInfo<IDataYoutube>(url).pipe(take(1)).subscribe(res => {
-        console.log('answare from youtube');
+      this.YTdataSelector$.pipe(takeUntil(this.destroy$)).subscribe(res => {
+        console.log('YTdataSelector');
         console.log(res);
-
-        this.spinerIsLoading = false;
-        this.store.dispatch(countAllRows({ countRow: res.items.length }));
-
-        this.rowData = res.items.map(elem => {
-          return {
-            thumbnails: elem.snippet.thumbnails.medium.url,
-            publishedAt: elem.snippet.publishedAt,
-            title: elem,
-            description: elem.snippet.description,
-          };
-        });
-        console.log('rowData');
-        console.log(this.rowData);
-      }, (err: any) => (console.log(err)));
+        this.rowData = res;
+      }, (err: any) => (console.log(err)))
     }
-
-
   }
 
   reactiveForm() {
@@ -159,6 +130,10 @@ export class MainComponent implements OnInit {
       searchValue: ['', Validators.required],
       mode: [true],
     });
+  }
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 
