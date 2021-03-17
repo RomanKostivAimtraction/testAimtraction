@@ -1,11 +1,11 @@
-import { GridOptions, Module } from '@ag-grid-community/core';
+import { GridOptions, MenuItemDef, Module } from '@ag-grid-community/core';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { RequestsService } from '../../shared/services/requests.service';
+// import { RequestsService } from '../../shared/services/requests.service';
 import { DataService } from './data.service';
 
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import { Store } from '@ngrx/store';
-import { countAllRowsSelector, countSelectedRows, countSelectedRowsSelector, requeftFromYoutube, spinerIsLoadingSelector, YTdataSelector } from 'src/app/reducers/main.reducer';
+import { countAllRowsSelector, countSelectedRows, countSelectedRowsSelector, requeftFromYoutube, spinerIsLoadingSelector, YTdataSelector } from 'src/app/Store/main.reducer';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { MatIconRegistry } from '@angular/material/icon';
@@ -13,7 +13,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { IRowData } from 'src/app/shared/interfaces/main';
+import { IParamsForContextMenu, IRowData } from 'src/app/shared/interfaces/main';
 
 // export interface IRowData {
 //   description: string;
@@ -21,6 +21,23 @@ import { IRowData } from 'src/app/shared/interfaces/main';
 //   thumbnails: string;
 //   title: object;
 // }
+
+// export function simpleFunc(a: number, b: number) {
+//   if (typeof a == 'number' && typeof b == 'number' ) {
+//     return a + b
+//   } else {
+//     return -1
+//   }
+// }
+
+// export const SET_test = [
+//   {
+//     testName: 'should somthing doing',
+//     a: 2,
+//     b: 3,
+//     result: 5
+//   }
+// ]
 
 
 @Component({
@@ -42,6 +59,8 @@ export class MainComponent implements OnInit, OnDestroy {
   spinerIsLoading$ = this.store.select(spinerIsLoadingSelector);
   YTdataSelector$ = this.store.select(YTdataSelector);
   // --------
+
+
 
 
   constructor(
@@ -68,10 +87,10 @@ export class MainComponent implements OnInit, OnDestroy {
     this.getContextMenuItems = this.getContextMenuItemsFunc;
   }
 
-  getContextMenuItemsFunc(params) {
-    console.log(params);
-    const contextArray: Array<any> = [ // need know true interfase for array
-      'copy',
+
+  getContextMenuItemsFunc(params: IParamsForContextMenu) {
+    const contextArray: (string | MenuItemDef)[] = [ // need know true interfase for array
+      'copy', 
       'copyWithHeaders'
     ];
 
@@ -86,17 +105,12 @@ export class MainComponent implements OnInit, OnDestroy {
       });
 
     }
-
     return contextArray;
   }
 
 
   rowSelected() {
-    console.log(this.gridOptions.api.getSelectedRows());
     const countRow: number = this.gridOptions.api.getSelectedRows().length;
-    console.log('countRow');
-    console.log(countRow);
-
     this.store.dispatch(countSelectedRows({ countRow }));
   }
 
@@ -131,6 +145,7 @@ export class MainComponent implements OnInit, OnDestroy {
       mode: [true],
     });
   }
+
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();

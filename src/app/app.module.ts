@@ -18,10 +18,10 @@ import { RequestsService } from './shared/services/requests.service';
 import { environment } from '../environments/environment';
 // ----NgRx
 import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from './reducers';
+import { reducers, metaReducers } from '../app/Store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
-import { AppEffects } from './app.effects';
+import { AppEffects } from './Store/app.effects';
 
 // ------
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';

@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MainComponent should return context menu 1`] = `
+Array [
+  "copy",
+  "copyWithHeaders",
+  "separator",
+  Object {
+    "action": [Function],
+    "cssClasses": Array [
+      "redFont",
+      "bold",
+    ],
+    "name": "Open in new tab",
+  },
+]
+`;

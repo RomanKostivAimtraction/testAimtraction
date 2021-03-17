@@ -25,3 +25,9 @@ export interface IRowData {
     thumbnails: string;
     title: object;
 }
+
+export interface IParamsForContextMenu {
+    column: { colDef: { field: string } },
+    node: { data: { title: { id: { videoId: string } } } }
+
+}

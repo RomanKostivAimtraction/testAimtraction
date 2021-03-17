@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { EMPTY, Observable, of } from 'rxjs';
 import { map, mergeMap, catchError, switchMap } from 'rxjs/operators';
-import { requeftFromYoutube, requeftFromYoutubeError, requeftFromYoutubeSuccess } from './reducers/main.reducer';
-import { IData, IRowData, objFromYoutube } from './shared/interfaces/main';
-import { RequestsService } from './shared/services/requests.service';
+import { requeftFromYoutube, requeftFromYoutubeError, requeftFromYoutubeSuccess } from './main.reducer';
+import { IData, IRowData, objFromYoutube } from '../shared/interfaces/main';
+import { RequestsService } from '../shared/services/requests.service';
 
 
 
