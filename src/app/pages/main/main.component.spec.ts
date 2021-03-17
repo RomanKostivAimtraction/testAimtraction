@@ -1,14 +1,16 @@
 import { AgGridModule } from '@ag-grid-community/angular';
 import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { MaterialModule } from '../../shared/material/material.module';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { provideMockStore, MockStore } from '@ngrx/store/testing';
+
 
 
 import { MainComponent } from './main.component';
-import { reducers, metaReducers } from 'src/app/reducers';
+import { reducers, metaReducers } from '../../Store';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { SET_test } from './data.service';
 import { IParamsForContextMenu } from 'src/app/shared/interfaces/main';
@@ -19,6 +21,9 @@ declare const expect: jest.Expect;
 describe('MainComponent', () => {
   let component: MainComponent;
   let fixture: ComponentFixture<MainComponent>;
+  // let store; MockStore
+  let form: FormGroup;
+  let fb: FormBuilder;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -39,6 +44,7 @@ describe('MainComponent', () => {
       providers: [ToastrService],
     })
       .compileComponents();
+    // store = TestBed.inject(MockStore);
   }));
 
   beforeEach(() => {
@@ -46,6 +52,8 @@ describe('MainComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
+
+
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -66,6 +74,27 @@ describe('MainComponent', () => {
       expect(contextMenuResult).toEqual(contextMenu);
     }
   });
+
+  // it('should dispatch count row in store', ()=>{
+  //   const countRow: number = 5;
+  //   const storeSpy = jest.spyOn(store, 'dispatch').mockImplementation;
+  //   component.rowSelected();
+
+  //   expect(storeSpy.).toHaveBeenCalled()
+
+
+  // })
+
+  it('should be contain reactive form', (done)=>{
+
+    form = fb.group({
+      fake: ['']
+    })
+
+    expect(component.reactiveForm).toEqual(form)
+
+
+  })
 });
 
 

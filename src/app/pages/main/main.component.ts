@@ -15,30 +15,6 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { IParamsForContextMenu, IRowData } from 'src/app/shared/interfaces/main';
 
-// export interface IRowData {
-//   description: string;
-//   publishedAt: string;
-//   thumbnails: string;
-//   title: object;
-// }
-
-// export function simpleFunc(a: number, b: number) {
-//   if (typeof a == 'number' && typeof b == 'number' ) {
-//     return a + b
-//   } else {
-//     return -1
-//   }
-// }
-
-// export const SET_test = [
-//   {
-//     testName: 'should somthing doing',
-//     a: 2,
-//     b: 3,
-//     result: 5
-//   }
-// ]
-
 
 @Component({
   selector: 'app-main',
