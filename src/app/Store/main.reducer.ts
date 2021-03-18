@@ -2,7 +2,6 @@ import { createAction, createFeatureSelector, createReducer, createSelector, on,
 import { IData, IRowData } from '../shared/interfaces/main';
 
 export const SELECTROWS_KEY = 'data';
-export const YTDATA_KEY = 'ytData';
 
 export const countSelectedRows = createAction('[MAIN] countSelectedRows', props<{ countRow: number }>());
 

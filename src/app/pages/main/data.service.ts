@@ -1,76 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ImageComponent } from '../main/image/image.component';
 
-// export const SET_test = [
-// 	{
-// 		testName: `should return 3`,
-// 		a: 1,
-// 		b: 2,
-// 		result: 3
-// 	},
-// 	{
-// 		testName: `should return 3`,
-// 		a: 2,
-// 		b: 1,
-// 		result: 3
-// 	},
-// 	{
-// 		testName: `should return 0`,
-// 		a: 0,
-// 		b: 0,
-// 		result: 0
-// 	},
-// 	{
-// 		testName: `should return 0`,
-// 		a: -1,
-// 		b: 1,
-// 		result: 0
-// 	},
-// 	{
-// 		testName: `should return 444`,
-// 		a: 123,
-// 		b: 321,
-// 		result: 444
-// 	},
-// 	{
-// 		testName: `should return -1`,
-// 		a: [],
-// 		b: 0,
-// 		result: -1
-// 	},
-// 	{
-// 		testName: `should return -1`,
-// 		a: 5,
-// 		b: {},
-// 		result: -1
-// 	},
-// 	{
-// 		testName: `should return -1`,
-// 		a: {},
-// 		b: {},
-// 		result: -1
-// 	},
-// 	{
-// 		testName: `should return -1`,
-// 		a: null,
-// 		b: new Map(),
-// 		result: -1
-// 	},
-// 	{
-// 		testName: `should return -1`,
-// 		a: undefined,
-// 		b: [undefined],
-// 		result: -1
-// 	},
-// 	{
-// 		testName: `should return -1`,
-// 		a: "1",
-// 		b: "123",
-// 		result: -1
-// 	}
-// ];
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -125,7 +55,7 @@ export class DataService {
   constructor() {
   }
 
-  dataFormater(date) {
+  dataFormater(date) {   
     return `${date.slice(8, 10)}.${date.slice(5, 7)}.${date.slice(0, 4)}`;
   }
 

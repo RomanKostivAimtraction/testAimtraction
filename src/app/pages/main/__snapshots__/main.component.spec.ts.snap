@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MainComponent should return context menu 1`] = `
+exports[`MainComponent should return context menu with open new tab 1`] = `
 Array [
   "copy",
   "copyWithHeaders",
