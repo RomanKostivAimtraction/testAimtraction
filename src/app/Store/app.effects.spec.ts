@@ -5,10 +5,13 @@ import { Observable } from 'rxjs';
 
 import { AppEffects } from './app.effects';
 import { RequestsService } from '../shared/services/requests.service';
+import { Action } from '@ngrx/store';
+
 
 describe('AppEffects', () => {
-  let actions$: Observable<any>;
+  // let actions$: Observable<any>;
   let effects: AppEffects;
+  let requeftFromYoutube$ = new Observable<Action>();
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -17,7 +20,7 @@ describe('AppEffects', () => {
         HttpHandler,
         HttpClient,
         RequestsService,
-        provideMockActions(() => actions$)
+        provideMockActions(() => requeftFromYoutube$)
       ],
     });
 
