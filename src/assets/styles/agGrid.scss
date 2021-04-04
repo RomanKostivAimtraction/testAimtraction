@@ -1,0 +1,27 @@
+.dateGrid{
+    font-size: 20px;
+    color: grey;
+    text-align: center;
+    padding-top: 15px;
+}
+.titleGrid{
+    font-size: 20px;
+    text-decoration: none;
+    padding-top: 15px;
+    a{
+        text-decoration: none;
+        color: grey;
+        cursor: pointer;
+        &:hover{
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    }
+}
+.descriptonGrid{
+    font-size: 20px;
+    color: grey;
+    padding-top: 15px;
+    white-space: normal !important;
+
+}

@@ -2,7 +2,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { TestBed, ɵTestingCompiler } from '@angular/core/testing';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 
-import { RequestsService } from './requests.service';
+import { apiKey, RequestsService } from './requests.service';
+import { IData } from '../interfaces/main';
 
 describe('RequestsService', () => {
   let service: RequestsService;
@@ -22,16 +23,17 @@ describe('RequestsService', () => {
   });
 
 
-  it('getInfo() should be return obj from youtube', () => {
-
+  it('getInfo() should be return obj from youtube', (done) => {
     const expectObj = {};
-    const url = `LOL`;
+    const searchValue = `LOL`;
+    const link = `https://www.googleapis.com/youtube/v3/search?key=${apiKey}&maxResults=20&type=video&part=snippet&q=${searchValue}`
 
-    service.getInfo(url).subscribe(res => {
+    service.getInfo<IData>(searchValue).subscribe(res => {
       expect(res).toEqual(expectObj);
+      done();
     });
 
-    const request = httpMock.expectOne(url);
+    const request = httpMock.expectOne(link);
     expect(request.request.method).toBe('GET');
     request.flush(expectObj);
   });

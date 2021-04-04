@@ -1,22 +1,42 @@
-<div class="panel">
-    <div class="searchPlace">
-        <input type="text" placeholder="write text..." [(ngModel)]="searchValue" name="searchValue">
-        <button (click)="getInfo()" class="buttonClick">Search</button>
-    </div>
-    <div class="infoPanel">
-        <div class="box">
-            <span>all rows</span>
-            {{countAllRows$ | async}}
-        </div>
-        <div class="box">
-            <span>selected rows</span>
-            {{countSelectedRows$ | async}}
-        </div>
-        <button class="buttonClick" (click)="changeMode()">Change mode</button>
-    </div>
+<form [formGroup]='myForm'>
+    <div class="row mt-4 pl-4">
 
+        <div class="col-md-3">
+            <mat-form-field>
+                <input matInput type="text" placeholder="Search..." formControlName='searchValue' required>
+            </mat-form-field>
+            <mat-error *ngIf="myForm.get('searchValue').errors && myForm.get('searchValue').touched">
+                You must enter a value
+            </mat-error>
+        </div>
+        <div class="col-md-1">
+            <mat-icon matDatepickerToggleIcon svgIcon="search" (click)="getInfo()" matTooltip="press to search"
+                [matTooltipPosition]="'above'">
+            </mat-icon>
+            <!-- <button  class="buttonClick">Search</button> -->
+        </div>
+        <div class="col-md-1">
+            <mat-form-field>
+                <mat-label>All rows</mat-label>
+                <input matInput type="number" [value]='countAllRows$ | async' readonly>
+            </mat-form-field>
+        </div>
+        <div class="col-md-1">
+            <mat-form-field>
+                <mat-label>Seected rows</mat-label>
+                <input matInput type="number" [value]='countSelectedRows$ | async' readonly>
+            </mat-form-field>
+        </div>
+        <div class="col-md-1">
 
-    <div class="spiner" *ngIf="spinerIsLoading">
+            <mat-slide-toggle formControlName='mode' (change)="changeMode($event.checked)">Slide me!</mat-slide-toggle>
+
+        </div>
+
+    </div>
+</form>
+<div class="row">
+    <div class="spiner" *ngIf="spinerIsLoading$ | async">
         <img src="assets/icons/spiner.gif" alt="">
     </div>
 </div>
@@ -24,13 +44,14 @@
 
 
 
-
-
-
-
-
-    <ag-grid-angular style="width: 100%; height: 700px;" class="ag-theme-alpine" [gridOptions]="gridOptions"
-        [rowData]="rowData" [modules]="modules" [columnDefs]="dataService.columnDefs" rowSelection='multiple'
-        (rowSelected)="rowSelected()" [getContextMenuItems]="getContextMenuItems">
-    </ag-grid-angular>
-
+<ag-grid-angular 
+    style="width: 100%; height: 100%;" 
+    class="ag-theme-alpine"
+    [gridOptions]="gridOptions"
+    [rowData]="rowData" 
+    [modules]="modules"
+    [columnDefs]="dataService.columnDefs"
+    rowSelection='multiple'
+    (rowSelected)="rowSelected()" 
+    [getContextMenuItems]="getContextMenuItems">
+</ag-grid-angular>

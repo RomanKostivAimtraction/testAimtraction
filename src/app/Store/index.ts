@@ -6,14 +6,16 @@ import {
   MetaReducer
 } from '@ngrx/store';
 import { environment } from '../../environments/environment';
-import { checkBoxModeReducer, IRows, SELECTROWS_KEY } from './main.reducer';
+import { IData } from '../shared/interfaces/main';
+import { mainReducer, SELECTROWS_KEY } from './main.reducer';
 
 export interface State {
-  [SELECTROWS_KEY]: IRows
+  [SELECTROWS_KEY]: IData;
+
 }
 
 export const reducers: ActionReducerMap<State> = {
-  [SELECTROWS_KEY]: checkBoxModeReducer
+  [SELECTROWS_KEY]: mainReducer,
 
 };
 
